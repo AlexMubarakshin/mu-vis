@@ -54,13 +54,19 @@ export class Visual extends React.Component<IVisualsProps> {
         let barWidth = (rectLength / bufferLength);
         
         this.props.analyser!.getByteFrequencyData(this.props.dataArray!);
-
+        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = "#fff";
         ctx.beginPath();
         ctx.arc(cx, cy, rectRadius, 0, Math.PI * 2);
         ctx.closePath();
         ctx.fill();
         ctx.save();
+        
         ctx.translate(cx, cy);
 
         for (let i = 0; i < bufferLength; i++) {
@@ -70,8 +76,9 @@ export class Visual extends React.Component<IVisualsProps> {
             let b = 50;
 
             ctx.rotate(rotation);
-            ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-            ctx.strokeRect(-rectHeight / 2 + 150, -barWidth / 2, barHeight, barWidth);
+            // ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(-rectHeight / 2 + 150, -barWidth / 2, barHeight, barWidth);
             rotation = (rotation / (bufferLength + barWidth)) % 360 + 1;
         }
 

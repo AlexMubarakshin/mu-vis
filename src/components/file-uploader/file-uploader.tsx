@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import './file-uploader.css';
+
 interface IUploaderProps {
     onFileChosen(files: FileList): void;
 }

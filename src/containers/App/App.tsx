@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 
-import { Uploader } from 'src/components/file-uploader';
+import { Uploader } from 'src/components/file-uploader/file-uploader';
 import { Player, IDataCallback } from 'src/components/player';
 
 interface IAppState {
