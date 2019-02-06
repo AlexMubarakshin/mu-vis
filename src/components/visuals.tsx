@@ -10,15 +10,24 @@ export class Visual extends React.Component<IVisualsProps> {
     private canvasCtx: CanvasRenderingContext2D;
 
     componentDidMount() {
-        const width = window.innerWidth;
-        const height = window.innerHeight;
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
 
         this.canvasRef.height = height;
         this.canvasRef.width = width;
 
         this.canvasCtx = this.canvasRef.getContext("2d")!;
 
+        window.addEventListener("resize", this.onWindowResize);
+
+        setTimeout(this.onWindowResize, 150);
+
         requestAnimationFrame(this.animate);
+    }
+
+    onWindowResize = () => {
+        this.canvasRef.width = document.documentElement.clientWidth;
+        this.canvasRef.height = document.documentElement.clientHeight;
     }
 
 
@@ -38,7 +47,6 @@ export class Visual extends React.Component<IVisualsProps> {
         let cx = WIDTH / 2;
         let cy = HEIGHT / 2;
         let rectHeight = 15;
-        let rectWidth = 10;
         let rotation = 0;
         
         const rectRadius = 100;
@@ -63,18 +71,16 @@ export class Visual extends React.Component<IVisualsProps> {
 
             ctx.rotate(rotation);
             ctx.fillStyle = "rgb(" + r + "," + g + "," + b + ")";
-            ctx.strokeRect(-rectHeight / 2 + 150, -barWidth / 2, barHeight, rectWidth);
-            rotation = (rotation / (bufferLength + rectWidth)) % 360 + 1;
+            ctx.strokeRect(-rectHeight / 2 + 150, -barWidth / 2, barHeight, barWidth);
+            rotation = (rotation / (bufferLength + barWidth)) % 360 + 1;
         }
 
         ctx.restore();
-
     }
-
 
     render() {
         return (
-            <canvas ref={ref => this.canvasRef = ref!} id="canvas" width={300} height={300} />
+            <canvas ref={ref => this.canvasRef = ref!} id="canvas" width={"100%"} height={"100%"} />
         );
     }
 }

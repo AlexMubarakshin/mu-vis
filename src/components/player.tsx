@@ -12,63 +12,57 @@ export interface IDataCallback {
 };
 
 interface IPlayerProps {
-    files: FileList;
     onFileLoaded(data: IDataCallback): void;
 }
 
-interface IPlayerState {
-    currentTrack?: ITrack;
-    meta: IDataCallback;
-}
+interface IPlayerState { }
 
 export class Player extends React.Component<IPlayerProps, IPlayerState> {
     private audioRef: HTMLAudioElement;
 
-    state: IPlayerState = {
-        meta: {}
-    }
+    private audioContext: AudioContext;
+    private analyser: AnalyserNode;
 
-    async componentDidMount() {
-        const currentTrackSrc = URL.createObjectURL(this.props.files[0]);
+    private dataArray: Uint8Array;
+
+    public setSong = async (fileURL: object) => {
+        const currentTrackSrc = URL.createObjectURL(fileURL);
         this.audioRef.src = currentTrackSrc;
         this.audioRef.load();
         this.audioRef.play();
 
-        const context = new AudioContext();
-        const src = context.createMediaElementSource(this.audioRef);
-        const analyser = context.createAnalyser();
+        if (!this.audioContext) {
+            this.audioContext = new AudioContext();
+            const src = this.audioContext.createMediaElementSource(this.audioRef);
+            this.analyser = this.audioContext.createAnalyser();
+            src.connect(this.analyser);
+        }
 
-        src.connect(analyser);
-        analyser.connect(context.destination);
+        this.analyser.connect(this.audioContext.destination);
 
-        analyser.fftSize = 256;
+        this.analyser.fftSize = 256;
 
-        const bufferLength = analyser.frequencyBinCount;
+        const bufferLength = this.analyser.frequencyBinCount;
 
-        const dataArray = new Uint8Array(bufferLength);
-
-        await this.setState({
-            meta: {
-                analyser,
-                dataArray
-            }
-        });
+        this.dataArray = new Uint8Array(bufferLength);
 
         this.props.onFileLoaded({
-            analyser,
-            dataArray
+            analyser: this.analyser,
+            dataArray: this.dataArray
         });
     }
 
     render() {
         return (
             <div>
-                {this.state.meta.analyser && this.state.meta.analyser && (
-                    <Visual
-                        analyser={this.state.meta.analyser}
-                        dataArray={this.state.meta.dataArray}
-                    />
-                )}
+                {
+                    this.analyser && this.dataArray && (
+                        <Visual
+                            analyser={this.analyser}
+                            dataArray={this.dataArray}
+                        />
+                    )
+                }
 
                 <audio style={{
                     bottom: 0,

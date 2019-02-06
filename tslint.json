@@ -21,6 +21,7 @@
     "no-empty-interface": false,
     "jsx-boolean-value": false,
     "prefer-const": false,
-    "jsdoc-format": false
+    "jsdoc-format": false,
+    "interface-over-type-literal": false
   }
 }

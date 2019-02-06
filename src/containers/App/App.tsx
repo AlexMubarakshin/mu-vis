@@ -10,13 +10,16 @@ interface IAppState {
 }
 
 export class App extends React.Component<{}, IAppState> {
-
     state: IAppState = {}
+    
+    private playerRef: Player;
 
     onFilesChosen = (files: FileList) => {
         this.setState({
             files
         });
+
+        this.playerRef.setSong(files[0]);
     }
 
     onFileLoaded = (meta: IDataCallback) => {
@@ -28,17 +31,14 @@ export class App extends React.Component<{}, IAppState> {
     render() {
         return (
             <div className="App">
-                {
-                    !this.state.files && (<Uploader onFileChosen={this.onFilesChosen} />)
-                }
+                <Uploader onFileChosen={this.onFilesChosen} />
                 {
                     this.state.files && (
                         <Player
-                            onFileLoaded={this.onFileLoaded}
-                            files={this.state.files} />
+                            ref={ref => this.playerRef = ref!}
+                            onFileLoaded={this.onFileLoaded} />
                     )
                 }
-
             </div>
         );
     }
