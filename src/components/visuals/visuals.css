@@ -1,7 +1,6 @@
-.uploader {
+#mu-vis-visualization {
     position: absolute;
     top: 0;
     left: 0;
-    color: #fff;
-    z-index: 2;
+    z-index: 1;
 }

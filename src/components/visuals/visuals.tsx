@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { IDataCallback } from './player';
-import { analyzeSound } from 'src/utils/sound';
+import { IDataCallback } from '../player';
+import "./visuals.css";
 
 interface IVisualsProps extends IDataCallback { }
 
@@ -19,8 +19,6 @@ export class Visual extends React.Component<IVisualsProps> {
         this.canvasCtx = this.canvasRef.getContext("2d")!;
 
         window.addEventListener("resize", this.onWindowResize);
-
-        setTimeout(this.onWindowResize, 150);
 
         requestAnimationFrame(this.animate);
     }
@@ -87,7 +85,7 @@ export class Visual extends React.Component<IVisualsProps> {
 
     render() {
         return (
-            <canvas ref={ref => this.canvasRef = ref!} id="canvas" width={"100%"} height={"100%"} />
+            <canvas id="mu-vis-visualization" ref={ref => this.canvasRef = ref!} width={"100%"} height={"100%"} />
         );
     }
 }

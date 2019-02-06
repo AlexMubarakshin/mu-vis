@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Visual } from './visuals';
+import { Visual } from './visuals/visuals';
 
 interface ITrack {
     src: string;
