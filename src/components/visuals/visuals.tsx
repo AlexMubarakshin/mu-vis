@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { IDataCallback } from '../player';
 import "./visuals.css";
+import { avg } from 'src/utils/sound';
 
 interface IVisualsProps extends IDataCallback { }
 
@@ -9,6 +10,7 @@ export class Visual extends React.Component<IVisualsProps> {
     private canvasRef: HTMLCanvasElement;
     private canvasCtx: CanvasRenderingContext2D;
 
+    private CIRCLE_WIDTH = 15;
     private CIRCLE_RADIUS = 100;
 
     componentDidMount() {
@@ -35,6 +37,9 @@ export class Visual extends React.Component<IVisualsProps> {
 
         const bufferLength = this.props.analyser!.frequencyBinCount;
 
+        const avgBuffer = avg((this.props as any).dataArray);
+        const circleLineWidth = avgBuffer < this.CIRCLE_WIDTH ? this.CIRCLE_WIDTH: avgBuffer;
+
         const ctx = this.canvasCtx;
 
         let rotation = 0;
@@ -45,7 +50,7 @@ export class Visual extends React.Component<IVisualsProps> {
         this.props.analyser!.getByteFrequencyData(this.props.dataArray!);
 
         this.clearBackground();
-        this.drawCircle();
+        this.drawCircle(circleLineWidth);
 
         for (let i = 0; i < bufferLength; i++) {
             const barHeight = this.props.dataArray![i];
@@ -68,7 +73,7 @@ export class Visual extends React.Component<IVisualsProps> {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    private drawCircle = () => {
+    private drawCircle = (lineWidth: number) => {
         const canvas = this.canvasRef;
         const ctx = this.canvasCtx;
 
@@ -80,7 +85,7 @@ export class Visual extends React.Component<IVisualsProps> {
 
         ctx.beginPath();
         ctx.arc(cx, cy, this.CIRCLE_RADIUS, 0, Math.PI * 2);
-        ctx.lineWidth = 10;
+        ctx.lineWidth = lineWidth;
         ctx.strokeStyle = "#fff";
         ctx.closePath();
         ctx.stroke();
@@ -94,7 +99,7 @@ export class Visual extends React.Component<IVisualsProps> {
 
         ctx.rotate(rotation);
         ctx.fillStyle = "#fff";
-        ctx.fillRect(150, -barWidth / 2, barHeight, barWidth);
+        ctx.fillRect(this.CIRCLE_RADIUS + 100, -barWidth / 2, barHeight, barWidth);
     }
 
     render() {
