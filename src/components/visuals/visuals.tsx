@@ -4,14 +4,18 @@ import { IDataCallback } from '../player';
 import "./visuals.css";
 import { avg } from 'src/utils/sound';
 
+const RENDERED_OBJECTS = {
+    CIRCLE: {
+        radius: 150,
+        width: 15
+    }
+}
+
 interface IVisualsProps extends IDataCallback { }
 
 export class Visual extends React.Component<IVisualsProps> {
     private canvasRef: HTMLCanvasElement;
     private canvasCtx: CanvasRenderingContext2D;
-
-    private CIRCLE_WIDTH = 15;
-    private CIRCLE_RADIUS = 100;
 
     componentDidMount() {
         const width = document.documentElement.clientWidth;
@@ -38,13 +42,13 @@ export class Visual extends React.Component<IVisualsProps> {
         const bufferLength = this.props.analyser!.frequencyBinCount;
 
         const avgBuffer = avg((this.props as any).dataArray);
-        const circleLineWidth = avgBuffer < this.CIRCLE_WIDTH ? this.CIRCLE_WIDTH: avgBuffer;
+        const circleLineWidth = avgBuffer < RENDERED_OBJECTS.CIRCLE.width ? RENDERED_OBJECTS.CIRCLE.width: avgBuffer;
 
         const ctx = this.canvasCtx;
 
         let rotation = 0;
 
-        const rectLength = this.CIRCLE_RADIUS * 2 * Math.PI;
+        const rectLength = RENDERED_OBJECTS.CIRCLE.radius * 2 * Math.PI;
         let barWidth = (rectLength / bufferLength);
 
         this.props.analyser!.getByteFrequencyData(this.props.dataArray!);
@@ -84,7 +88,7 @@ export class Visual extends React.Component<IVisualsProps> {
         let cy = HEIGHT / 2;
 
         ctx.beginPath();
-        ctx.arc(cx, cy, this.CIRCLE_RADIUS, 0, Math.PI * 2);
+        ctx.arc(cx, cy, RENDERED_OBJECTS.CIRCLE.radius, 0, Math.PI * 2);
         ctx.lineWidth = lineWidth;
         ctx.strokeStyle = "#fff";
         ctx.closePath();
@@ -99,7 +103,7 @@ export class Visual extends React.Component<IVisualsProps> {
 
         ctx.rotate(rotation);
         ctx.fillStyle = "#fff";
-        ctx.fillRect(this.CIRCLE_RADIUS + 100, -barWidth / 2, barHeight, barWidth);
+        ctx.fillRect(RENDERED_OBJECTS.CIRCLE.radius + 100, -barWidth / 2, barHeight, barWidth);
     }
 
     render() {
