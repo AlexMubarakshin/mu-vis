@@ -1,0 +1,14 @@
+.unsupported-message {
+    text-align: center;
+    margin: 0 auto;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+.unsupported-message__title {
+    font-size: 48pt;
+    color: #fff ;
+}

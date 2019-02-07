@@ -3,6 +3,7 @@ import './App.css';
 
 import { Uploader } from 'src/components/file-uploader/file-uploader';
 import { Player, IDataCallback } from 'src/components/player';
+import { Unsupported } from 'src/components/unsuported/unsupported';
 
 interface IAppState {
     files?: FileList;
@@ -11,7 +12,7 @@ interface IAppState {
 
 export class App extends React.Component<{}, IAppState> {
     state: IAppState = {}
-    
+
     private playerRef: Player;
 
     onFilesChosen = (files: FileList) => {
@@ -29,15 +30,27 @@ export class App extends React.Component<{}, IAppState> {
     }
 
     render() {
+        const isBrowserSupported = !!(window as any).AudioContext;
         return (
             <div className="App">
-                <Uploader onFileChosen={this.onFilesChosen} />
                 {
-                    this.state.files && (
-                        <Player
-                            ref={ref => this.playerRef = ref!}
-                            onFileLoaded={this.onFileLoaded} />
-                    )
+                     isBrowserSupported ?
+                        (
+                            <>
+                                <Uploader onFileChosen={this.onFilesChosen} />
+                                {
+                                    this.state.files && (
+                                        <Player
+                                            ref={ref => this.playerRef = ref!}
+                                            onFileLoaded={this.onFileLoaded} />
+                                    )
+                                }
+                            </>
+                        )
+                        :
+                        (
+                            <Unsupported />
+                        )
                 }
             </div>
         );

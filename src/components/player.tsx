@@ -26,6 +26,7 @@ export class Player extends React.Component<IPlayerProps, IPlayerState> {
     private dataArray: Uint8Array;
 
     public setSong = async (fileURL: object) => {
+        debugger;
         const currentTrackSrc = URL.createObjectURL(fileURL);
         this.audioRef.src = currentTrackSrc;
         this.audioRef.load();
