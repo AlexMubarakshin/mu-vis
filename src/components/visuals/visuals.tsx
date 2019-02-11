@@ -5,6 +5,9 @@ import "./visuals.css";
 import { avg } from 'src/utils/sound';
 
 const RENDERED_OBJECTS = {
+    BAR: {
+        maxHeight: 250
+    },
     CIRCLE: {
         radius: 150,
         width: 15
@@ -38,13 +41,14 @@ export class Visual extends React.Component<IVisualsProps> {
 
     animate = () => {
         requestAnimationFrame(this.animate);
-
         const bufferLength = this.props.analyser!.frequencyBinCount;
 
         const avgBuffer = avg((this.props as any).dataArray);
-        const circleLineWidth = avgBuffer < RENDERED_OBJECTS.CIRCLE.width ? RENDERED_OBJECTS.CIRCLE.width: avgBuffer;
+        const circleLineWidth = avgBuffer < RENDERED_OBJECTS.CIRCLE.width ? RENDERED_OBJECTS.CIRCLE.width : avgBuffer;
 
+        const canvas = this.canvasRef;
         const ctx = this.canvasCtx;
+        const totalObjectWidth = RENDERED_OBJECTS.CIRCLE.radius * 2 + RENDERED_OBJECTS.BAR.maxHeight * 2;
 
         let rotation = 0;
 
@@ -100,10 +104,11 @@ export class Visual extends React.Component<IVisualsProps> {
 
     private drawBar = (rotation: number, barHeight: number, barWidth: number) => {
         const ctx = this.canvasCtx;
+        const fixedBarHeight = barHeight > RENDERED_OBJECTS.BAR.maxHeight ? RENDERED_OBJECTS.BAR.maxHeight : barHeight;
 
         ctx.rotate(rotation);
         ctx.fillStyle = "#fff";
-        ctx.fillRect(RENDERED_OBJECTS.CIRCLE.radius + 100, -barWidth / 2, barHeight, barWidth);
+        ctx.fillRect(RENDERED_OBJECTS.CIRCLE.radius + 100, -barWidth / 2, fixedBarHeight, barWidth);
     }
 
     render() {
