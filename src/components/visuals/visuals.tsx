@@ -46,9 +46,7 @@ export class Visual extends React.Component<IVisualsProps> {
         const avgBuffer = avg((this.props as any).dataArray);
         const circleLineWidth = avgBuffer < RENDERED_OBJECTS.CIRCLE.width ? RENDERED_OBJECTS.CIRCLE.width : avgBuffer;
 
-        const canvas = this.canvasRef;
         const ctx = this.canvasCtx;
-        const totalObjectWidth = RENDERED_OBJECTS.CIRCLE.radius * 2 + RENDERED_OBJECTS.BAR.maxHeight * 2;
 
         let rotation = 0;
 

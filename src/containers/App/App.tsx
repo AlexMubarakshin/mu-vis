@@ -6,7 +6,7 @@ import { Player, IDataCallback } from 'src/components/player';
 import { Unsupported } from 'src/components/unsuported/unsupported';
 
 interface IAppState {
-    files?: FileList;
+    file?: File;
     meta?: IDataCallback;
 }
 
@@ -15,9 +15,9 @@ export class App extends React.Component<{}, IAppState> {
 
     private playerRef: Player;
 
-    onFilesChosen = (files: FileList) => {
-        this.setState({
-            files
+    onFilesChosen = async (files: FileList) => {
+        await this.setState({
+            file: files[0]
         });
 
         this.playerRef.setSong(files[0]);
@@ -34,12 +34,12 @@ export class App extends React.Component<{}, IAppState> {
         return (
             <div className="App">
                 {
-                     isBrowserSupported ?
+                    isBrowserSupported ?
                         (
                             <>
                                 <Uploader onFileChosen={this.onFilesChosen} />
                                 {
-                                    this.state.files && (
+                                    this.state.file && (
                                         <Player
                                             ref={ref => this.playerRef = ref!}
                                             onFileLoaded={this.onFileLoaded} />

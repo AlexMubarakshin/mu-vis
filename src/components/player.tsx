@@ -25,21 +25,28 @@ export class Player extends React.Component<IPlayerProps, IPlayerState> {
 
     private dataArray: Uint8Array;
 
+    componentDidMount() {
+        this.audioRef.onerror = this.onAudioError;
+    }
+
     public setSong = async (fileURL: object) => {
-        debugger;
         const currentTrackSrc = URL.createObjectURL(fileURL);
+
         this.audioRef.src = currentTrackSrc;
         this.audioRef.load();
         this.audioRef.play();
 
         if (!this.audioContext) {
-            this.audioContext = new AudioContext();
+            const AudioCtx = (window as any).AudioContext
+                || (window as any).webkitAudioContext;
+
+            this.audioContext = new AudioCtx();
             const src = this.audioContext.createMediaElementSource(this.audioRef);
             this.analyser = this.audioContext.createAnalyser();
-            src.connect(this.analyser);
-        }
 
-        this.analyser.connect(this.audioContext.destination);
+            src.connect(this.analyser);
+            this.analyser.connect(this.audioContext.destination);
+        }
 
         this.analyser.fftSize = 256;
 
@@ -51,6 +58,10 @@ export class Player extends React.Component<IPlayerProps, IPlayerState> {
             analyser: this.analyser,
             dataArray: this.dataArray
         });
+    }
+
+    private onAudioError = (e: string | Event) => {
+        console.warn(e);
     }
 
     render() {
@@ -69,7 +80,7 @@ export class Player extends React.Component<IPlayerProps, IPlayerState> {
                     bottom: 0,
                     left: 0,
                     position: "absolute",
-                    zIndex: 9
+                    zIndex: 9,
                 }} ref={ref => this.audioRef = ref!} id="audio" controls></audio>
 
             </div>
