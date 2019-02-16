@@ -19,3 +19,12 @@ $ npm start
 
 # Visit localhost:3000
 ```
+
+## Contributing
+
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/AlexMubarakshin/mu-vis/issues/new).
+
+## License
+
+Copyright © 2019 [Alex Mubarakshin](https://github.com/AlexMubarakshin)
+Released under the [MIT license](https://github.com/AlexMubarakshin/mu-vis/blob/master/LICENSE).
