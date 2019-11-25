@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import { Visual } from './visuals/visuals';
 
 interface ITrack {
@@ -7,9 +7,9 @@ interface ITrack {
 }
 
 export interface IDataCallback {
-    dataArray?: Uint8Array,
-    analyser?: AnalyserNode
-};
+    dataArray?: Uint8Array;
+    analyser?: AnalyserNode;
+}
 
 interface IPlayerProps {
     onFileLoaded(data: IDataCallback): void;
@@ -18,30 +18,37 @@ interface IPlayerProps {
 interface IPlayerState { }
 
 export class Player extends React.Component<IPlayerProps, IPlayerState> {
-    private audioRef: HTMLAudioElement;
 
+
+    private readonly audioRef: React.RefObject<HTMLAudioElement>;
     private audioContext: AudioContext;
     private analyser: AnalyserNode;
 
     private dataArray: Uint8Array;
 
+    constructor(props: IPlayerProps) {
+        super(props);
+
+        this.audioRef = React.createRef<HTMLAudioElement>();
+    }
+
     componentDidMount() {
-        this.audioRef.onerror = this.onAudioError;
+        (this.audioRef.current as HTMLAudioElement).onerror = this.onAudioError;
     }
 
     public setSong = async (fileURL: object) => {
         const currentTrackSrc = URL.createObjectURL(fileURL);
 
-        this.audioRef.src = currentTrackSrc;
-        this.audioRef.load();
-        this.audioRef.play();
+        (this.audioRef.current as HTMLAudioElement).src = currentTrackSrc;
+        (this.audioRef.current as HTMLAudioElement).load();
+        (this.audioRef.current as HTMLAudioElement).play();
 
         if (!this.audioContext) {
             const AudioCtx = (window as any).AudioContext
                 || (window as any).webkitAudioContext;
 
             this.audioContext = new AudioCtx();
-            const src = this.audioContext.createMediaElementSource(this.audioRef);
+            const src = this.audioContext.createMediaElementSource(this.audioRef.current as HTMLAudioElement);
             this.analyser = this.audioContext.createAnalyser();
 
             src.connect(this.analyser);
@@ -79,9 +86,9 @@ export class Player extends React.Component<IPlayerProps, IPlayerState> {
                 <audio style={{
                     bottom: 0,
                     left: 0,
-                    position: "absolute",
+                    position: 'absolute',
                     zIndex: 9,
-                }} ref={ref => this.audioRef = ref!} id="audio" controls></audio>
+                }} ref={this.audioRef} id="audio" controls></audio>
 
             </div>
         );

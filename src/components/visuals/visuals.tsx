@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
 import { IDataCallback } from '../player';
-import "./visuals.css";
+import './visuals.css';
 import { avg } from 'src/utils/sound';
 
 const RENDERED_OBJECTS = {
@@ -12,7 +12,7 @@ const RENDERED_OBJECTS = {
         radius: 150,
         width: 15
     }
-}
+};
 
 interface IVisualsProps extends IDataCallback { }
 
@@ -27,9 +27,9 @@ export class Visual extends React.Component<IVisualsProps> {
         this.canvasRef.height = height;
         this.canvasRef.width = width;
 
-        this.canvasCtx = this.canvasRef.getContext("2d")!;
+        this.canvasCtx = this.canvasRef.getContext('2d')!;
 
-        window.addEventListener("resize", this.onWindowResize);
+        window.addEventListener('resize', this.onWindowResize);
 
         requestAnimationFrame(this.animate);
     }
@@ -51,7 +51,7 @@ export class Visual extends React.Component<IVisualsProps> {
         let rotation = 0;
 
         const rectLength = RENDERED_OBJECTS.CIRCLE.radius * 2 * Math.PI;
-        let barWidth = (rectLength / bufferLength);
+        const barWidth = (rectLength / bufferLength);
 
         this.props.analyser!.getByteFrequencyData(this.props.dataArray!);
 
@@ -75,7 +75,7 @@ export class Visual extends React.Component<IVisualsProps> {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "black";
+        ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
@@ -83,16 +83,16 @@ export class Visual extends React.Component<IVisualsProps> {
         const canvas = this.canvasRef;
         const ctx = this.canvasCtx;
 
-        let WIDTH = canvas.width;
-        let HEIGHT = canvas.height;
+        const WIDTH = canvas.width;
+        const HEIGHT = canvas.height;
 
-        let cx = WIDTH / 2;
-        let cy = HEIGHT / 2;
+        const cx = WIDTH / 2;
+        const cy = HEIGHT / 2;
 
         ctx.beginPath();
         ctx.arc(cx, cy, RENDERED_OBJECTS.CIRCLE.radius, 0, Math.PI * 2);
         ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = "#fff";
+        ctx.strokeStyle = '#fff';
         ctx.closePath();
         ctx.stroke();
         ctx.save();
@@ -105,13 +105,13 @@ export class Visual extends React.Component<IVisualsProps> {
         const fixedBarHeight = barHeight > RENDERED_OBJECTS.BAR.maxHeight ? RENDERED_OBJECTS.BAR.maxHeight : barHeight;
 
         ctx.rotate(rotation);
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = '#fff';
         ctx.fillRect(RENDERED_OBJECTS.CIRCLE.radius + 100, -barWidth / 2, fixedBarHeight, barWidth);
     }
 
     render() {
         return (
-            <canvas id="mu-vis-visualization" ref={ref => this.canvasRef = ref!} width={"100%"} height={"100%"} />
+            <canvas id="mu-vis-visualization" ref={ref => this.canvasRef = ref!} width={'100%'} height={'100%'} />
         );
     }
 }

@@ -50,5 +50,5 @@ export function analyzeSound(dataArray: number[]) {
         upperAvgFr,
         upperMax,
         upperMaxFr
-    }
+    };
 }

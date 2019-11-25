@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 import './file-uploader.css';
 
@@ -6,32 +6,29 @@ interface IUploaderProps {
     onFileChosen(files: FileList): void;
 }
 
-export class Uploader extends React.Component<IUploaderProps> {
-    inputRef: HTMLInputElement;
+export const Uploader: React.FC<IUploaderProps> = ({ onFileChosen }: IUploaderProps) => {
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
-    componentDidMount() {
-        this.inputRef.addEventListener("change", this.onInputChange);
-    }
-
-    componentWillUnmount() {
-        this.inputRef.removeEventListener("change", this.onInputChange);
-    }
-
-    private onInputChange = (e: Event) => {
+    const onInputChange = (e: Event) => {
         const files = (e.target as HTMLInputElement).files;
         if (files === null || !files.length) {
             return;
         }
-        
-        this.props.onFileChosen(files);
-    }
 
-    render() {
-        return (
-            <div className="uploader">
-                <input ref={ref => this.inputRef = ref!} type="file" id="music-file" accept="audio/*" />
-            </div>
-        );
+        onFileChosen(files);
+    };
 
-    }
-}
+    React.useEffect(() => {
+        (inputRef.current as HTMLInputElement).addEventListener('change', onInputChange);
+        return () => {
+            (inputRef.current as HTMLInputElement).removeEventListener('change', onInputChange);
+        };
+    }, []);
+
+
+    return (
+        <div className="uploader">
+            <input ref={inputRef} type="file" id="music-file" accept="audio/*" />
+        </div>
+    );
+};

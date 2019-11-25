@@ -15,7 +15,7 @@ export class App extends React.Component<{}, IAppState> {
 
     private playerRef: Player;
 
-    onFilesChosen = async (files: FileList) => {
+    private onFilesChosen = async (files: FileList) => {
         await this.setState({
             file: files[0]
         });
@@ -23,7 +23,7 @@ export class App extends React.Component<{}, IAppState> {
         this.playerRef.setSong(files[0]);
     }
 
-    onFileLoaded = (meta: IDataCallback) => {
+    private onFileLoaded = (meta: IDataCallback) => {
         this.setState({
             meta
         });
