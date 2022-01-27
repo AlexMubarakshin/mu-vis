@@ -9527,9 +9527,9 @@ text-table@0.2.0, text-table@^0.2.0:
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
 three@*:
-  version "0.110.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.110.0.tgz#8719591de1336269113ee79f4268ba247b2324f8"
-  integrity sha512-wlurH8XBO9Sd5VIw8nBa+taLR20kqaI4e9FiuMh6tqK8eOS2q2R+ZoUyufbyDTVTHhs8GiTbv0r2CMLkwerFJg==
+  version "0.137.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.137.1.tgz#30405bc22bafe3934cfc0f41f2d63b7e1b00da37"
+  integrity sha512-GwoWu7jL0YEwtAPMt2MijplOeSslFYJgORGxkEE19aRd2fk53VQPKYwsA+Lj7M19dQl4AI6Knv+jUK8F0L67Tg==
 
 throat@^4.0.0:
   version "4.1.0"
